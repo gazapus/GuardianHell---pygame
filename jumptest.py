@@ -1,54 +1,51 @@
-import pygame
-pygame.init()
+import sys
+import pygame as pg
 
-win = pygame.display.set_mode((500,500))
-pygame.display.set_caption("First Game")
 
-x = 150
-y = 150
-width = 40
-height = 60
-vel = 10
+def fill(surface, color):
+    """Fill all pixels of the surface with color, preserve transparency."""
+    w, h = surface.get_size()
+    r, g, b, _ = color
+    for x in range(w):
+        for y in range(h):
+            a = surface.get_at((x, y))[3]
+            surface.set_at((x, y), pg.Color(r, g, b, a))
 
-isJump = False
-jumpCount = 6
 
-run = True
+def main():
+    screen = pg.display.set_mode((640, 480))
+    clock = pg.time.Clock()
 
-while run:
-    pygame.time.delay(60)
+    # Uncomment this for a non-translucent surface.
+    # surface = pg.Surface((100, 150), pg.SRCALPHA)
+    # pg.draw.circle(surface, pg.Color(40, 240, 120), (50, 50), 50)
+    surface = pg.image.load('demon2fall.png').convert_alpha()
+    surface = pg.transform.rotozoom(surface, 0, 2)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
+    done = False
 
-    keys = pygame.key.get_pressed()
-    
-    if keys[pygame.K_LEFT] and x > vel: 
-        x -= vel
+    while not done:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                done = True
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_f:
+                    fill(surface, pg.Color(0, 0, 0))
+                if event.key == pg.K_g:
+                    fill(surface, pg.Color(250, 10, 40))
+                if event.key == pg.K_h:
+                    fill(surface, pg.Color(40, 240, 120))
 
-    if keys[pygame.K_RIGHT] and x < 500 - vel - width:  
-        x += vel
-        
-    if not(isJump): 
-        if keys[pygame.K_UP] and y > vel:
-            y -= vel
+        screen.fill(pg.Color('lightskyblue4'))
+        pg.draw.rect(screen, pg.Color(40, 50, 50), (210, 210, 50, 90))
+        screen.blit(surface, (200, 200))
 
-        if keys[pygame.K_DOWN] and y < 500 - height - vel:
-            y += vel
+        pg.display.flip()
+        clock.tick(30)
 
-        if keys[pygame.K_SPACE]:
-            isJump = True
-    else:
-        if jumpCount >= -6:
-            y -= (jumpCount * abs(jumpCount)) 
-            jumpCount -= 1
-        else: 
-            jumpCount = 6
-            isJump = False
-    
-    win.fill((0,0,0))
-    pygame.draw.rect(win, (255,0,0), (x, y, width, height))   
-    pygame.display.update() 
-    
-pygame.quit()
+
+if __name__ == '__main__':
+    pg.init()
+    main()
+    pg.quit()
+    sys.exit()
