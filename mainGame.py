@@ -22,12 +22,13 @@ def main():
      pygame.key.set_repeat(30)       #toma cada 30 ms el teclado
      #DECLARACION DE OBJETOS (SPRITES)
      player = Guardian((width/2, 100), 3)    
-     df = DemonFactory(30, 'demon.png', 'demonfall.png', 0,-2, 1)  
-     df2 = DemonFactory(30, 'demon2.png', 'demon2fall.png', 0,-3, 1)
-     endingLine = EndingLine(width, -50)
+     df = DemonFactory(30, 'demon.png', 'demonfall.png', 0,-2, 1, 300)  
+     df2 = DemonFactory(30, 'demon2.png', 'demon2fall.png', 0,-3, 1, 400)
+     df3 = DemonFactory(30, 'demon3.png', 'demon3fall.png', -3,-3, 1, 500)
+     endingTopLine = EndingLine(width, -50)
      demonsGoneQuantity = TextOnScreen(100, 20, 15, (0,0,0), "Demons Gone: ", 0)
-     demonsShotQuantity = TextOnScreen(500, 20, 15, (0,0,0), "Demons shot: ", 0)
-     window.blit(endingLine.image, endingLine.rect)
+     demonsShotQuantity = TextOnScreen(700, 20, 15, (0,0,0), "Demons shot: ", 0)
+     window.blit(endingTopLine.image, endingTopLine.rect)
      #COMIENZA EL JUEGO
      while True:
           clock.tick(60)  
@@ -37,22 +38,26 @@ def main():
                     sys.exit()
                elif event.type == pygame.KEYDOWN:
                     if(event.key == pygame.K_SPACE):
-                         demonsAttackedDf = pygame.sprite.spritecollide(player, df, False)
-                         demonsAttackedDf2 = pygame.sprite.spritecollide(player, df2, False)
-                         allDemonsAttacked = demonsAttackedDf + demonsAttackedDf2
-                         if(allDemonsAttacked):
-                              for demon in allDemonsAttacked:
+                         demonsAttacked = pygame.sprite.spritecollide(player, df, False)
+                         demonsAttacked += pygame.sprite.spritecollide(player, df2, False)
+                         demonsAttacked += pygame.sprite.spritecollide(player, df3, False)
+                         if(demonsAttacked):
+                              for demon in demonsAttacked:
                                    points = demon.getAttack()
                                    demonsShotQuantity.update(points)
                     player.update(event, width)
-          demonsGone = pygame.sprite.spritecollide(endingLine, df, True)
-          demonsGone += pygame.sprite.spritecollide(endingLine, df2, True)
+          player.updateJump()
+          demonsGone = pygame.sprite.spritecollide(endingTopLine, df, True)
+          demonsGone += pygame.sprite.spritecollide(endingTopLine, df2, True)
+          demonsGone += pygame.sprite.spritecollide(endingTopLine, df3, True)
           demonsGoneQuantity.update(len(demonsGone))
           window.blit(player.image, player.rect) #recibe la imagen y las coordenadas de su ubicacion(tupla)
           window.blit(demonsGoneQuantity.text, demonsGoneQuantity.rect)
           window.blit(demonsShotQuantity.text, demonsShotQuantity.rect)
           df.draw(window)
           df2.draw(window)
+          df3.draw(window)
+          df3.update()
           df2.update()
           df.update()
           pygame.display.flip() 

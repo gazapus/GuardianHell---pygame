@@ -22,6 +22,7 @@ class Demon(pygame.sprite.Sprite):
           if(not self.falling):
                self.speed[1] = self.speed[1] * 1.5
                self.speed[1] = - self.speed[1]
+               self.speed[0] = 0
                self.falling = True
                self.image = self.fallingImage
                points = self.pointsShot
