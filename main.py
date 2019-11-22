@@ -1,125 +1,83 @@
 import pygame, os, sys, time
+from Guardian import Guardian
+from Demon import Demon
+from DemonFactory import DemonFactory
+from EndingLine import EndingLine
+from TextOnScreen import TextOnScreen
 
-size = width, height = 600, 400
+size = width, height = 800, 600
 window = pygame.display.set_mode(size)
+#CONFIGURACION DE PANTALLA
+pygame.display.set_caption("No Escape From Hell")
+windowIconPath = os.path.join('ico.png')
+windowIconImage = pygame.image.load(windowIconPath)
+pygame.display.set_icon(windowIconImage)
 
 def main():
-        #inicializar configuracion
-        pygame.init()
-        #CONFIGURACION DE PANTALLA
-        pygame.display.set_caption("My super game")
-        os.environ['SDL_VIDEO_CENTERED'] = '1'
-        windowIconPath = os.path.join('ico.png')
-        windowIconImage = pygame.image.load(windowIconPath)
-        pygame.display.set_icon(windowIconImage)
-        green = 100,100,100 #tupla
-        #CONFIGURACION DE TIEMPO (FPS)
-        clock = pygame.time.Clock()
-        #CONFIGURACION DE LA LECTURA DEL TECLADO
-        pygame.key.set_repeat(30)       #toma cada 30 ms el teclado
-        #DECLARACION DE OBJETOS (SPRITES)
-        pelota = Ball(width/2, height/2)     #instancia de la clase Ball
-        gato = Cat(width/2, height-150)     #instancia de la clase Ball
-        grupo = Somegroup()
-        #COMIENZA EL JUEGO
-        while 1:
-                clock.tick(60)  #Velocidad de FPS
-                window.fill(green)  #rellena la ventana
-                for event in pygame.event.get():   #trae todos los eventos que sucedan
-                        if event.type == pygame.QUIT: 
-                                sys.exit()
-                        elif event.type == pygame.KEYDOWN:
-                                gato.update(event)
-                        elif event.type == pygame.MOUSEBUTTONDOWN:
-                                gameOver()
-                if(pygame.sprite.collide_rect(pelota, gato)):
-                        pelota.speed[0] = -pelota.speed[0]
-                        pelota.speed[1] = -pelota.speed[1]
-                #Destruye los elementos del grupo en cuanto colicionen con pelota (True)
-                #Devuelve una lista con todos los elementos del grupo que toco pelota
-                lista = pygame.sprite.spritecollide(pelota, grupo, True)
-                pelota.update()
-                window.blit(pelota.image, pelota.rect)  #dibuja una superficie sobre otra
-                grupo.draw(window)
-                window.blit(gato.image, gato.rect)  #dibuja una superficie sobre otra
-                pygame.display.flip()   #actualiza la pantalla
+     pygame.init()
+     green = 100,100,100 #tupla
+     #CONFIGURACION DE TIEMPO (FPS)
+     clock = pygame.time.Clock()
+     #CONFIGURACION DE LA LECTURA DEL TECLADO
+     pygame.key.set_repeat(30)       #toma cada 30 ms el teclado
+     #DECLARACION DE OBJETOS (SPRITES)
+     player = Guardian((width/2, 200), 3, 0)    
+     endingTopLine = EndingLine(width, -80)
+     window.blit(endingTopLine.image, endingTopLine.rect)
+     demonsGoneQuantity = TextOnScreen(100, 20, 15, (0,0,0), "Demons Gone: ", 0)
+     pointsOnScreen = TextOnScreen(700, 20, 15, (0,0,0), "Points: ", 0)
+     demonFactory = DemonFactory(width, height)
+     #DECLARACION DE EVENTOS (FABRICACIÓN DE DEMONIO)
+     NEW_DEMON_RED = pygame.USEREVENT
+     NEW_DEMON_BLUE = pygame.USEREVENT + 1
+     NEW_DEMON_YELLOW = pygame.USEREVENT + 1
+     pygame.time.set_timer(NEW_DEMON_RED, 2000)
+     pygame.time.set_timer(NEW_DEMON_BLUE, 4500)
+     pygame.time.set_timer(NEW_DEMON_YELLOW, 5000)
+     #COMIENZA EL JUEGO
+     while True: 
+          clock.tick(60)  
+          window.fill(green) 
 
-def gameOver():
-        font = pygame.font.SysFont('Arial', 60) #seleccion de fuente
-        text = font.render('GAME OVER', True, (255, 200, 200))    #rseleccion de texto, color y visibilidad
-        text_rect = text.get_rect()
-        text_rect.center = [width/2, height/2]
-        window.blit(text, text_rect)
-        pygame.display.flip()
-        time.sleep(3)
-        sys.exit()
+          for event in pygame.event.get():  
+               if event.type == pygame.QUIT: 
+                    sys.exit()
+               if event.type == NEW_DEMON_RED:   
+                     demonFactory.addDemon((0,0), "demon.png", "demonfall.png", 0, -2, 2, False, 1)
+               if event.type == NEW_DEMON_BLUE:
+                    demonFactory.addDemon((0,0), "demon2.png", "demon2fall.png", 0, -4, 2, True, 1)
+               if event.type == NEW_DEMON_YELLOW:
+                    demonFactory.addDemon((0,0), "demon3.png", "demon3fall.png", 2, -3, 1, True, 1)
 
+          keysPressed = pygame.key.get_pressed()
 
-class Ball(pygame.sprite.Sprite):
-        def __init__(self, width, height):
-                pygame.sprite.Sprite.__init__(self)
-                # load image
-                self.image = pygame.image.load('intro_ball.gif')
-                # Get rect from image. El recatangulo es importante para pygame ya que ese define la posicion y todo
-                self.rect = self.image.get_rect()
-                # Set starting position.
-                #self.rect.centerx = width #self.rect.centery = height
-                self.rect.center = (width, height)
-                #Set move speed
-                self.speed = [1,1]      #lista x,y
+          if(keysPressed[pygame.K_SPACE]):
+               demonsAttacked = pygame.sprite.spritecollide(player, demonFactory, False)
+               player.attack(demonsAttacked)
 
-        def update(self):
-                #Move the rect
-                if self.rect.bottom >= height or self.rect.top <= 0:
-                        self.speed[1] = -self.speed[1]
-                elif self.rect.right >= width or self.rect.left <= 0:
-                        self.speed[0] = -self.speed[0]
-                self.rect.move_ip(self.speed)
-               
+          if(keysPressed[pygame.K_LEFT]):
+               player.moveLeft(0)
 
-class Cat(pygame.sprite.Sprite):
-        def __init__(self, width, height):
-                pygame.sprite.Sprite.__init__(self)
-                # load image
-                self.image = pygame.image.load('gato.png')
-                # Get rect from image. El recatangulo es importante para pygame ya que ese define la posicion y todo
-                self.rect = self.image.get_rect()
-                # Set starting position.
-                #self.rect.centerx = width #self.rect.centery = height
-                self.rect.center = (width, height)
-                #Set move speed
-                self.speed = [1,1]      #lista x,y
+          if(keysPressed[pygame.K_RIGHT]):
+                    player.moveRight(width)
 
-        def update(self, event):
-                if(event.key == pygame.K_LEFT and self.rect.left > 0):
-                        self.speed = [-5,0]
-                elif(event.key == pygame.K_RIGHT and self.rect.right < width):
-                        self.speed = [5,0]
-                else:
-                        self.speed = [0,0]
-                self.rect.move_ip(self.speed)
+          if(keysPressed[pygame.K_UP]):
+               player.jump()
 
-class Something(pygame.sprite.Sprite):
-        def __init__(self, width, height, imagePath):
-                pygame.sprite.Sprite.__init__(self)
-                # load image
-                self.image = pygame.image.load(imagePath)
-                # Get rect from image. El recatangulo es importante para pygame ya que ese define la posicion y todo
-                self.rect = self.image.get_rect()
-                # Set starting position.
-                #self.rect.centerx = width #self.rect.centery = height
-                self.rect.center = (width, height)
+          player.update()
+          window.blit(player.image, player.rect) 
+             
+          demonsGone = pygame.sprite.spritecollide(endingTopLine, demonFactory, True)
+          demonsGoneQuantity.update(len(demonsGone))
+          window.blit(demonsGoneQuantity.text, demonsGoneQuantity.rect)
 
-class Somegroup(pygame.sprite.Group):
-        def __init__(self):
-                pygame.sprite.Group.__init__(self)
-                cam = os.path.join('cam.png')
-                some1 = Something(0,0, cam)
-                pin = os.path.join('pin.png')
-                some2 = Something(width, 0, pin)
-                self.add(some1)
-                self.add(some2)
-    
+          pointsOnScreen.setValue(player.points)
+          window.blit(pointsOnScreen.text, pointsOnScreen.rect)
+
+          demonFactory.draw(window)
+          demonFactory.update()
+          pygame.display.flip() 
+
 if __name__ == '__main__':
     print("hola")
     main()

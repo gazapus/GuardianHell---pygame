@@ -1,17 +1,14 @@
 import pygame, random
-from demon import Demon
+from Demon import Demon
 
 class DemonFactory(pygame.sprite.Group):
-     def __init__(self, demonsQuantity, demonsInterval, widthScreen, heightScreen,
-               demonPathImage, demonFallPathImage, speedX, speedY, resistance, fallToHit, points):
-          
+     def __init__(self, _widthScreen, _heightScreen):
           pygame.sprite.Group.__init__(self)
-          pos_x = widthScreen/2    #todos los primeros demonios partiran de la mitad de la coordenada x
-          pos_y = heightScreen + 200    #todos los primeros demonios partiran 200px mas abajos de la cordenada y
-          for i in range(demonsQuantity):
-               demon = Demon((pos_x, pos_y), demonPathImage, demonFallPathImage, speedX, speedY, resistance, fallToHit, points)  
-               self.add(demon)
-               pos_x = random.randint(round(demon.rect.width/2), widthScreen - round(demon.rect.width/2))
-               pos_y = random.randint(pos_y, pos_y + demonsInterval)
-               
-                
+          self.widthScreen = _widthScreen
+          self.heightScreen = _heightScreen
+
+     def addDemon(self, startingPosition, demonFlyImagePath, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points):
+          newDemon = Demon( startingPosition, demonFlyImagePath, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points)
+          newDemon.rect.x = random.randint(round(newDemon.rect.width/2), self.widthScreen - newDemon.rect.width)
+          newDemon.rect.y = self.heightScreen + newDemon.rect.height
+          self.add(newDemon)
