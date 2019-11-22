@@ -1,7 +1,7 @@
 import pygame, os, sys, time
 from Guardian import Guardian
 from Demon import Demon
-from DemonFactory import DemonFactory
+from Factory import Factory
 from EndingLine import EndingLine
 from TextOnScreen import TextOnScreen
 
@@ -26,14 +26,17 @@ def main():
      window.blit(endingTopLine.image, endingTopLine.rect)
      demonsGoneQuantity = TextOnScreen(100, 20, 15, (0,0,0), "Demons Gone: ", 0)
      pointsOnScreen = TextOnScreen(700, 20, 15, (0,0,0), "Points: ", 0)
-     demonFactory = DemonFactory(width, height)
+     demonFactory = Factory(width, height)
+     treasureFactory = Factory(width, height)
      #DECLARACION DE EVENTOS (FABRICACIÓN DE DEMONIO)
      NEW_DEMON_RED = pygame.USEREVENT
      NEW_DEMON_BLUE = pygame.USEREVENT + 1
-     NEW_DEMON_YELLOW = pygame.USEREVENT + 1
+     NEW_DEMON_YELLOW = pygame.USEREVENT + 2
+     NEW_COIN = pygame.USEREVENT + 3
      pygame.time.set_timer(NEW_DEMON_RED, 2000)
      pygame.time.set_timer(NEW_DEMON_BLUE, 4500)
      pygame.time.set_timer(NEW_DEMON_YELLOW, 5000)
+     pygame.time.set_timer(NEW_COIN, 4000)
      #COMIENZA EL JUEGO
      while True: 
           clock.tick(60)  
@@ -48,6 +51,8 @@ def main():
                     demonFactory.addDemon((0,0), "demon2.png", "demon2fall.png", 0, -4, 2, True, 1)
                if event.type == NEW_DEMON_YELLOW:
                     demonFactory.addDemon((0,0), "demon3.png", "demon3fall.png", 2, -3, 1, True, 1)
+               if event.type == NEW_COIN:
+                    treasureFactory.addTreasure((0,0), "goldcoin.png", 0, -3, 10)
 
           keysPressed = pygame.key.get_pressed()
 
@@ -66,7 +71,10 @@ def main():
 
           player.update()
           window.blit(player.image, player.rect) 
-             
+          
+          treasuresTaken = pygame.sprite.spritecollide(player, treasureFactory, False)
+          player.takeTreasure(treasuresTaken)
+
           demonsGone = pygame.sprite.spritecollide(endingTopLine, demonFactory, True)
           demonsGoneQuantity.update(len(demonsGone))
           window.blit(demonsGoneQuantity.text, demonsGoneQuantity.rect)
@@ -76,6 +84,8 @@ def main():
 
           demonFactory.draw(window)
           demonFactory.update()
+          treasureFactory.draw(window)
+          treasureFactory.update()
           pygame.display.flip() 
 
 if __name__ == '__main__':

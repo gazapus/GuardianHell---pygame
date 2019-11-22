@@ -9,6 +9,7 @@ class Demon(pygame.sprite.Sprite):
           self.flyImageHit = self.fill(demonFlyImagePath)
           self.fallingImage = pygame.image.load(demonFallImagePath).convert_alpha()   #imagen de caida
           self.rect = self.image.get_rect()
+          self.rect = self.rect.inflate(-20, -20) #reoooooooooooooooocien agregado
           self.rect.center = startingPosition
           self.originalSpeedX = speedX  #velocidad en el eje x
           self.originalSpeedY = speedY  #velocidad en el eje y
