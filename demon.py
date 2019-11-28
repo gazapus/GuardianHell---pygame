@@ -2,9 +2,10 @@ import pygame
 from threading import Timer
 
 class Demon(pygame.sprite.Sprite):
-     def __init__(self, startingPosition, demonFlyImagePath, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points):
+     def __init__(self, startingPosition, demonFlyImagePath, demonFlyImagePath2, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points):
           pygame.sprite.Sprite.__init__(self)
           self.flyImage = pygame.image.load(demonFlyImagePath).convert_alpha()   #imagen de vuelo
+          self.flyImage2 = pygame.image.load(demonFlyImagePath2).convert_alpha()   #imagen de vuelo
           self.image = self.flyImage
           self.flyImageHit = self.fill(demonFlyImagePath)
           self.fallingImage = pygame.image.load(demonFallImagePath).convert_alpha()   #imagen de caida
@@ -18,11 +19,25 @@ class Demon(pygame.sprite.Sprite):
           self.fallToHit = _fallToHit
           self.falling = False
           self.points = _points     #cantidad de puntos que otorga al morir
+          self.imageA = True
 
      def update(self):
           if(self.rect.left <= 0 or self.rect.right >= 800):
                self.speed[0] = -self.speed[0]
           self.rect.move_ip(self.speed)
+          if(not self.falling):
+               if(self.imageA):
+                    self.image = self.flyImage2
+                    self.image = self.flyImage2
+                    self.image = self.flyImage2
+                    self.imageA= False
+               else:
+                    self.image = self.flyImage
+                    self.image = self.flyImage
+                    self.image = self.flyImage
+                    self.imageA= True
+
+
 
      def fill(self, imagePath):
           image = pygame.image.load(imagePath).convert_alpha()

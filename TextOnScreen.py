@@ -1,9 +1,9 @@
 import pygame
 
 class TextOnScreen(pygame.sprite.Sprite):
-     def __init__(self, xPosition, YPosition, sizeText, color, text, value):
+     def __init__(self, xPosition, YPosition, sizeText, color, font, text, value=0):
           pygame.sprite.Sprite.__init__(self)
-          self.font = pygame.font.SysFont('Courier New', sizeText)
+          self.font = pygame.font.SysFont(font, sizeText)
           self.textOriginal = text
           self.value = value
           self.color = color

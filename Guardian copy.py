@@ -6,24 +6,24 @@ from Demon import Demon
 class Guardian(pygame.sprite.Sprite):
         def __init__(self, asset, positionX, positionY, lives, initialPoints):
                 pygame.sprite.Sprite.__init__(self)
-                self.rightImage =  pygame.image.load(asset.get("right"))
-                self.leftImage =  pygame.image.load(asset.get("left"))
-                self.leftAttackImage = pygame.image.load(asset.get("left-attack"))
-                self.rightAttackImage = pygame.image.load(asset.get("right-attack"))
+                self.rightImage =  pygame.image.load('./src/images/guardian-r.png')
+                self.leftImage =  pygame.image.load('./src/images/guardian-l.png')
+                self.leftAttackImage = pygame.image.load('./src/images/guardian-l-a.png')
+                self.rightAttackImage = pygame.image.load('./src/images/guardian-r-a.png')
                 self.image = self.rightImage
                 self.rect = self.image.get_rect()
                 self.rect.x = positionX
                 self.rect.y = positionY
                 self.lives = lives
-                self.damageHit = 1
-                self.points = initialPoints
                 self.isAttacking = False
                 self.directionRight = False
                 self.isJumping = False
-                self.isRestingJump = False
+                self.isResting = False
                 self.jumpCount = 12
                 self.isRestingAttack = False
-               
+                self.damageHit = 1
+                self.points = initialPoints
+
         def moveRight(self, max):
                 if(self.rect.right < max and not self.isAttacking):
                         self.rect.x += 7
@@ -41,7 +41,7 @@ class Guardian(pygame.sprite.Sprite):
                         self.isJumping = True
 
         def update(self):
-                if(self.isJumping and not self.isRestingJump):
+                if(self.isJumping and not self.isResting):
                         if self.jumpCount >= -12:
                                 self.rect.y -= (self.jumpCount * abs(self.jumpCount))*0.1       #error parchado
                                 self.jumpCount -= 1
@@ -49,7 +49,7 @@ class Guardian(pygame.sprite.Sprite):
                                 self.rect.y += 11       #parche: le suma los 11 pixeles que se adelanta en cada salto
                                 self.jumpCount = 12
                                 self.isJumping = False
-                                self.isRestingJump = True
+                                self.isResting = True
                                 restTime = Timer(0.2, self.finishBreak)
                                 restTime.start()
                 if(self.isAttacking):
@@ -58,7 +58,7 @@ class Guardian(pygame.sprite.Sprite):
                         self.image = self.rightImage if self.directionRight else self.leftImage
                        
         def finishBreak(self):
-                self.isRestingJump = False
+                self.isResting = False
 
         def finishBreakAttack(self):
                 self.isRestingAttack = False
