@@ -1,43 +1,59 @@
 import pygame
 from threading import Timer
+from itertools import cycle
 
 class Demon(pygame.sprite.Sprite):
-     def __init__(self, startingPosition, demonFlyImagePath, demonFlyImagePath2, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points):
+     def __init__(self, _widthScreen, _heightScreen, images, demonFallImagePath, speedX, speedY, startingPosition, _resistance, _fallToHit, _points):
           pygame.sprite.Sprite.__init__(self)
-          self.flyImage = pygame.image.load(demonFlyImagePath).convert_alpha()   #imagen de vuelo
-          self.flyImage2 = pygame.image.load(demonFlyImagePath2).convert_alpha()   #imagen de vuelo
-          self.image = self.flyImage
-          self.flyImageHit = self.fill(demonFlyImagePath)
-          self.fallingImage = pygame.image.load(demonFallImagePath).convert_alpha()   #imagen de caida
-          self.rect = self.image.get_rect()
-          self.rect = self.rect.inflate(-20, -20) #reoooooooooooooooocien agregado
-          self.rect.center = startingPosition
+          #cordenada x desde donde puede moverse el personaje
+          self.startScreen = 0
+          #coordenada y hasta donde puede moverse el personaje
+          self.widthScreen = _widthScreen  
+          #coordenada y ....
+          self.heightScreen = _heightScreen
           self.originalSpeedX = speedX  #velocidad en el eje x
           self.originalSpeedY = speedY  #velocidad en el eje y
           self.speed = [speedX, speedY]
-          self.resistance = _resistance  #cantidad de golpes normales necesarios para morir
+          #cantidad de golpes normales necesarios para caer definitivamente
+          self.resistance = _resistance 
+          #condición que describe  que si recibe un ataque y aun tiene resistencia caerá o sigue avanzando
           self.fallToHit = _fallToHit
-          self.falling = False
-          self.points = _points     #cantidad de puntos que otorga al morir
-          self.imageA = True
+          #cantidad de puntos que devuelve al caer definitivamente
+          self.points = _points    
+          #condición que describe si está el demonio cayendo
+          self.isFalling = False
+          #imagen usada al ser atacado
+          self.hitImage = self.fill(pygame.image.load(images[0]))    
+          self.fallingImage = pygame.image.load(demonFallImagePath).convert_alpha()  #imagen usada al estar ceayendo
+          #ultima posicion en el eje y donde cambió de imagen
+          self.lastYPosition  = _heightScreen
+
+          imageList = []
+          for imageURL in images:
+               imageList.append(pygame.image.load(imageURL).convert_alpha())
+          self.images = cycle(imageList)
+          self.image = pygame.image.load(images[0])
+          self.rect = self.image.get_rect()
+          self.rect = self.rect.inflate(-20, -20)
+          self.rect.center = startingPosition
+
+
+
 
      def update(self):
           if(self.rect.left <= 0 or self.rect.right >= 800):
                self.speed[0] = -self.speed[0]
           self.rect.move_ip(self.speed)
-          if(not self.falling):
-               if(self.imageA):
-                    self.image = self.flyImage2
-                    self.image = self.flyImage2
-                    self.image = self.flyImage2
-                    self.imageA= False
-               else:
-                    self.image = self.flyImage
-                    self.image = self.flyImage
-                    self.image = self.flyImage
-                    self.imageA= True
-
-
+          if(not self.isFalling):
+               if(self.rect.y < self.lastYPosition - 50):
+                    if(self.imageA):
+                         self.image = self.flyImage2
+                         self.imageA = False
+                    else:
+                         self.image = self.flyImage
+                         self.imageA = True
+                    self.lastYPosition = self.rect.y
+    
 
      def fill(self, imagePath):
           image = pygame.image.load(imagePath).convert_alpha()
@@ -50,7 +66,7 @@ class Demon(pygame.sprite.Sprite):
 
      def getAttack(self, hitDamage):
           points = 0
-          if(self.resistance > 0 and not self.falling):
+          if(self.resistance > 0 and not self.isFalling):
                self.resistance -= hitDamage
                if(self.resistance <= 0):
                     self.fall()
@@ -71,13 +87,13 @@ class Demon(pygame.sprite.Sprite):
           self.image = self.flyImage
 
      def turnBackFly(self):
-          self.falling = False
+          self.isFalling = False
           self.speed[1] = self.originalSpeedY
           self.speed[0] = self.originalSpeedX
           self.image = self.flyImage
 
      def fall(self):
-          self.falling = True
+          self.isFalling = True
           self.speed = [0, 5]
           self.image = self.fallingImage
           

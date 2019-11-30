@@ -9,7 +9,7 @@ class Factory(pygame.sprite.Group):
           self.heightScreen = _heightScreen
 
      def addDemon(self, startingPosition, demonFlyImagePath, demonFlyImagePath2,  demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points):
-          newDemon = Demon( startingPosition, demonFlyImagePath, demonFlyImagePath2, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points)
+          newDemon = Demon( startingPosition, demonFlyImagePath, demonFlyImagePath2, demonFallImagePath, speedX, speedY, _resistance, _fallToHit, _points, _widthScreen)
           newDemon.rect.x = random.randint(round(newDemon.rect.width/2), self.widthScreen - newDemon.rect.width)
           newDemon.rect.y = self.heightScreen + newDemon.rect.height
           self.add(newDemon)

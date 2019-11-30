@@ -6,7 +6,7 @@ from Level1 import Level
 
 def main():     
      #Configuración del pantalla   
-     resolution = width, height = 800, 600
+     resolution = width, height = 600, 800
      window = pygame.display.set_mode(resolution)
      pygame.display.set_caption("No Escape From Hell")
      windowIconImage = pygame.image.load('./src/images/ico.png')
@@ -39,7 +39,7 @@ def main():
                initialize = False  
           events = pygame.event.get()
           keysPressed = pygame.key.get_pressed()
-          sceneData = scenes[i].runEvents(events, keysPressed, window)   #ejecuta los eventos en la escena
+          sceneData = scenes[i].runEvents(events, keysPressed, window, width, height)   #ejecuta los eventos en la escena
           if(sceneData.get("nextScene")):    #verifica si tiene que pasar a la siguiente escena
                initialize = True
           for event in events: 

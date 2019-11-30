@@ -7,7 +7,8 @@ from TextOnScreen import TextOnScreen
 
 class Level(pygame.sprite.Sprite):
      def __init__(self, width, height, player):
-          self.width = width
+          self.widthScreen = width
+          self.heightScreen = height    # ver si lo uso
           self.background = pygame.image.load("./src/images/level1.jpg")
           self.player = player
           self.endingTopLine = EndingLine(width, -80)
