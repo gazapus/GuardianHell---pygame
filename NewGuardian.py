@@ -1,5 +1,4 @@
 import pygame, time
-from threading import Thread
 from threading import Timer
 from Demon import Demon
 from itertools import cycle
@@ -18,10 +17,11 @@ class Guardian(pygame.sprite.Sprite):
           self.leftJumpImage = pygame.image.load(jumpLeftImagePath)
           self.rightJumpImage = pygame.transform.flip(self.leftJumpImage, True, False)
           self.leftAttackImage = pygame.image.load(attackImagePath)
-          self.rightAttackImage = pygame.transform.flip(self.leftAttackImage, True, False)
+          #self.rightAttackImage = pygame.transform.flip(self.leftAttackImage, True, False)
+          self.rightAttackImage = pygame.image.load('./src/images/guardian/__demon_whack_attack_no_flames_right_006.png')
           self.image = self.stoppedLeftImage
           self.attackSound = pygame.mixer.Sound(attackSoundPath)
-          self.rect = self.image.get_rect().inflate(-10, 00)
+          self.rect = self.image.get_rect()
           self.rect.center = startingPosition
           self.lives = _lives
           self.damageHit = 1
@@ -32,7 +32,8 @@ class Guardian(pygame.sprite.Sprite):
           self.isRestingJump = False
           self.jumpCount = 15
           self.isAttacking = False
-          self.isRestingAttack = False
+          self.canAttack = True
+          self.attackStarted = False
                
      def setImages(self, imagesPath):
           """
@@ -72,7 +73,7 @@ class Guardian(pygame.sprite.Sprite):
           if(self.orientationLeft):
                self.image = next(self.runRightImages)
                self.orientationLeft = False
-          if(self.rect.right < max - 40):    #el menos 15 es parche, luego ver redefinir el rec cada cambio de img
+          if(self.rect.right < max - 40):    #el menos 40 es parche, luego ver redefinir el rec cada cambio de img
                self.rect.x += 9
                if(self.rect.x >= self.lastXPosition + 40):
                     self.image = next(self.runRightImages)
@@ -106,18 +107,28 @@ class Guardian(pygame.sprite.Sprite):
      def finishJumpBreak(self):
           self.isRestingJump = False
 
-     def finishBreakAttack(self):
-          self.isRestingAttack = False
+     def attack(self, enemiesAttacked=[]):
+          if(self.canAttack):
+               if(not self.attackStarted):
+                    self.attackStarted = True
+                    self.attackSound.play()
+                    self.isAttacking = True  
+                    diff = -100 if self.orientationLeft else 50
+                    self.rect.move_ip(diff, 0)
+                    self.rect.inflate_ip(50, -30)
+                    Timer(0.2, self.finishAttack, [diff]).start()   #en este tiempo queda inhabilitado para atacar
+               if(enemiesAttacked):
+                    for enemy in enemiesAttacked:
+                         self.points += enemy.getAttack(self.damageHit)
 
-     def finishAttack(self):
+     def finishBreakAttack(self):
+          self.canAttack = True
+          self.attackStarted = False
+
+     def finishAttack(self, diff):
+          self.rect.move_ip(-diff, 0)
+          self.rect.inflate_ip(-50, +30)
           self.isAttacking = False
-          self.isRestingAttack = True
+          self.canAttack = False
           Timer(0.3, self.finishBreakAttack).start()
           self.image = self.stoppedLeftImage if self.orientationLeft else self.stoppedRightImage
-
-
-     def attack(self):
-          if(not self.isRestingAttack and not self.isAttacking):
-               self.attackSound.play()
-               self.isAttacking = True
-               Timer(0.4, self.finishAttack).start()
