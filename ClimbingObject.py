@@ -52,8 +52,7 @@ class ClimbingObject(pygame.sprite.Sprite):
           """
           self.rect.move_ip(self.speed)
           #if the object is outside the y-axis limits be it will be removed       
-          if(self.rect.y >= yMin + 400 or self.rect.y <= yMax - 400):
-               print("muerto")
+          if(self.rect.y >= yMin + 500 or self.rect.y <= yMax - 500):
                self.kill()
           #if the object is outside the x-axis, its x-speed will be reversed      
           if(self.rect.left <= xMin or self.rect.right >= xMax):

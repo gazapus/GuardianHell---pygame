@@ -11,9 +11,9 @@ class StartScreen(pygame.sprite.Sprite):
           window.blit(self.background, (0,0))
           window.blit(self.startMessage.text, self.startMessage.rect)
 
-     def runEvents(self, events, keys, window):, 
-          window.blit(self.background, (0,0))
-          window.blit(self.startMessage.text, self.startMessage.rect)
+     def runEvents(self, events, *others):
+          #window.blit(self.background, (0,0))
+          #window.blit(self.startMessage.text, self.startMessage.rect)
           for event in events :
                if(event.type == pygame.KEYUP):
                     return {"nextScene": True}

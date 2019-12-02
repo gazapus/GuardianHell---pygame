@@ -63,7 +63,6 @@ class Demon(ClimbingObject):
           pointsToReturn = 0
           if(not self.isFalling):
                self.hp -= hitDamage
-               print(self.hp)
                self.currentDamageReceived += hitDamage
                if(self.hp <= 0):
                     pointsToReturn = self.points

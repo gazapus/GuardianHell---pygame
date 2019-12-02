@@ -29,7 +29,7 @@ class Item(ClimbingObject):
           """ the object is taken: its points are returned """
           self.image = self.takenImage
           self.speed = [0,0]
-          Timer(0.2, self.dissapear).start()
+          Timer(0.1, self.dissapear).start()
           #the points are moved to other temporal variable to prevent multiple assignments
           pointsToReturn = self.points
           self.points = 0

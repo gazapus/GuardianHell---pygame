@@ -5,19 +5,22 @@ class TextOnScreen(pygame.sprite.Sprite):
           pygame.sprite.Sprite.__init__(self)
           self.font = pygame.font.SysFont(font, sizeText)
           self.textOriginal = text
-          self.value = value
-          self.color = color
-          fullText = text + str(value)
-          self.text = self.font.render(fullText, True, color)
+          self.value = value  #integer
+          self.color = color  #tuple
+          self.text = self.setFullText(text, value)
           self.rect = self.text.get_rect()
           self.rect.center = [xPosition, YPosition]
 
-     def update(self, value):
-          self.value += value
-          fullText = self.textOriginal + str(self.value)
-          self.text = self.font.render(fullText, True, self.color)
+     def setFullText(self, text, value):
+          valueText = (": " + str(value)) if value else ""
+          fullText = text + valueText
+          newFullText = self.font.render(fullText, True, self.color)
+          return newFullText
 
      def setValue(self, _value):
           self.value = _value
-          fullText = self.textOriginal + str(self.value)
-          self.text = self.font.render(fullText, True, self.color)
+          self.text = self.setFullText(self.textOriginal, _value)
+
+     def updateValue(self, _value):
+          self.value += _value
+          self.text = self.setFullText(self.textOriginal, self.value)

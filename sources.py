@@ -38,3 +38,12 @@ soulPaths = {
      'up-images': soulBasicUpImages,
      'down-images': soulBasicDownImages
 }
+
+coinPaths = [
+     './src/images/items/coin001.png',
+     './src/images/items/coin002.png',
+     './src/images/items/coin003.png',
+     './src/images/items/coin004.png',
+     './src/images/items/coin005.png',
+     './src/images/items/coin006.png'
+]
