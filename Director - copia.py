@@ -7,7 +7,7 @@ from Level2 import Level2
 
 def main():     
      #Configuración del pantalla   
-     resolution = width, height = 800, 650
+     resolution = width, height = 800, 800
      window = pygame.display.set_mode(resolution)
      pygame.display.set_caption("No Escape From Hell")
      windowIconImage = pygame.image.load('./src/images/ico.png')

@@ -54,7 +54,7 @@ def main():
           dd = pygame.sprite.spritecollide(endingBottomLine, factorySoul, True)
           treasureTaken = pygame.sprite.spritecollide(player, factoryTreasure, False)
           if(treasureTaken):
-               player.takeTreasure(treasureTaken)
+               player.getTreasure(treasureTaken)
           factoryTreasure.draw(window)
           factorySoul.draw(window)
           factorySoul.update(0, width, height, 0) #cambiar esto

@@ -78,7 +78,7 @@ class Guardian(pygame.sprite.Sprite):
                                 for demon in demonsAttacked:
                                         self.points += demon.getAttack(self.damageHit)
 
-        def takeTreasure(self, treasuresTaken):
+        def getTreasure(self, treasuresTaken):
                 if(treasuresTaken):
                         for treasure in treasuresTaken:
                                 self.points += treasure.points

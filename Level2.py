@@ -4,9 +4,9 @@ from Level import Level
 from TextOnScreen import TextOnScreen
 from threading import Timer
 
-class Level1(Level):
+class Level2(Level):
      def __init__(self, width, height, player):
-          super().__init__(width, height, player, "./src/images/background/h1.jpg")
+          super().__init__(width, height, player, "./src/images/background/h2.jpg")
           self.thereAreEnemies = True
           self.NEW_BASIC_SOUL = pygame.USEREVENT
           self.NEW_COIN = pygame.USEREVENT + 1
@@ -30,7 +30,7 @@ class Level1(Level):
           for event in events:  
                if(self.thereAreEnemies):
                     if event.type == self.NEW_BASIC_SOUL:  
-                         self.enemiesFactory.addSoulBasic()
+                         self.enemiesFactory.addSoulBoomerang()
                     if event.type == self.NEW_COIN:
                          self.treasureFactory.addCoin()
                     if event.type == self.NEW_DIAMOND:
