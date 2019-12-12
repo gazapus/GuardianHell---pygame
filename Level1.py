@@ -7,45 +7,58 @@ from threading import Timer
 class Level1(Level):
      def __init__(self, width, height, player):
           super().__init__(width, height, player, "./src/images/background/h1.jpg")
-          self.thereAreEnemies = True
           self.NEW_BASIC_SOUL = pygame.USEREVENT
-          self.NEW_COIN = pygame.USEREVENT + 1
-          self.END_LEVEL = pygame.USEREVENT + 2
+          self.NEW_BOUNCER_SOUL = pygame.USEREVENT + 1
+          self.NEW_BOOMERANG_SOUL = pygame.USEREVENT + 2
           self.NEW_FIREBALL = pygame.USEREVENT + 3
-          self.NEW_DIAMOND = pygame.USEREVENT + 4
-          self.NEW_LIVE = pygame.USEREVENT + 5
-          pygame.time.set_timer(self.NEW_BASIC_SOUL, 1000)
-          pygame.time.set_timer(self.NEW_COIN, 4500)
-          pygame.time.set_timer(self.NEW_FIREBALL, 2000)
-          pygame.time.set_timer(self.NEW_DIAMOND, 2200)
-          pygame.time.set_timer(self.NEW_LIVE, 1500)
-          pygame.time.set_timer(self.END_LEVEL, 20000)
+          self.NEW_COIN = pygame.USEREVENT + 4
+          self.NEW_DIAMOND = pygame.USEREVENT + 5
+          self.NEW_LIVE = pygame.USEREVENT + 6
+          self.END_LEVEL = pygame.USEREVENT + 7
 
-     def stopEnemies(self):
-          self.thereAreEnemies = False
+     def initialize(self, window):
+          window.blit(self.endingTopLine.image, self.endingTopLine.rect)
+          pygame.time.set_timer(self.NEW_BASIC_SOUL, 3000)
+          pygame.time.set_timer(self.NEW_BOUNCER_SOUL, 7000)
+          pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 10000)
+          pygame.time.set_timer(self.NEW_FIREBALL, 17000)
+          pygame.time.set_timer(self.NEW_COIN, 16000)
+          pygame.time.set_timer(self.NEW_DIAMOND, 27000)
+          pygame.time.set_timer(self.NEW_LIVE, 31000)
+          pygame.time.set_timer(self.END_LEVEL, 60000)
+          Timer(52, self.stopAll).start()
+
+     def stopAll(self):
+          pygame.time.set_timer(self.NEW_BASIC_SOUL, 0)
+          pygame.time.set_timer(self.NEW_BOUNCER_SOUL, 0)
+          pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 0)
+          pygame.time.set_timer(self.NEW_FIREBALL, 0)
+          pygame.time.set_timer(self.NEW_COIN, 0)
+          pygame.time.set_timer(self.NEW_DIAMOND, 0)
+          pygame.time.set_timer(self.NEW_LIVE, 0)
 
      def runEvents(self, events, keysPressed, window, width, height):
           super().runBasicEvents(events, keysPressed, window, width, height)
-          Timer(15, self.stopEnemies).start()
           for event in events:  
-               if(self.thereAreEnemies):
                     if event.type == self.NEW_BASIC_SOUL:  
                          self.enemiesFactory.addSoulBasic()
+                    if event.type == self.NEW_BOUNCER_SOUL:  
+                         self.enemiesFactory.addSoulBounce()
+                    if event.type == self.NEW_BOOMERANG_SOUL:  
+                         self.enemiesFactory.addSoulBoomerang()
                     if event.type == self.NEW_COIN:
                          self.treasureFactory.addCoin()
                     if event.type == self.NEW_DIAMOND:
                          self.treasureFactory.addDiamond()
                     if event.type == self.NEW_FIREBALL:
                          self.attacksFactory.addAttack()
-                         self.attacksFactory.addSuperAttack()
                     if event.type == self.NEW_LIVE:
                          self.livesFactory.addLive()
-               elif event.type == self.END_LEVEL:
-                    endLevelMessage = TextOnScreen(width/2, height/2, 50, (250, 0, 0), 'Arial', "Fin de nivel 1")
-                    window.blit(endLevelMessage.text, endLevelMessage.rect)
-                    pygame.display.flip()
-                    pygame.time.wait(1000)
-                    return {'nextScene': True}
+                    if event.type == self.END_LEVEL:
+                         pygame.time.set_timer(self.END_LEVEL, 0)
+                         endLevelMessage = TextOnScreen(width/2, height/2, 50, (250, 0, 0), 'Arial', "Fin de nivel 1")
+                         window.blit(endLevelMessage.text, endLevelMessage.rect)
+                         pygame.display.flip()
+                         pygame.time.wait(1000)
+                         return {'nextScene': True}
           return {}
-
-         

@@ -6,7 +6,7 @@ from Line import Line
 from Guardian import Guardian
 from sources import guardianPaths
 from TextOnScreen import TextOnScreen
-
+from threading import Timer
 class Level():
      def __init__(self, width, height, player, backgroundPath, enemiesGoneQuantity=0):
           self.player = player
@@ -21,10 +21,7 @@ class Level():
           self.livesFactory = Factory(width, height)
           self.enemiesGoneCounter = TextOnScreen(40, 10, 20, (0,0,0), 'Arial', "Souls Gone", enemiesGoneQuantity)
           self.pointsCounter = TextOnScreen(700, 10, 20, (0,0,0), 'Arial', "Points", player.points)
-          self.livesCounter = TextOnScreen(400, 10, 20, (0,0,0), 'Arial', "Lives", player.lives)
-     
-     def initialize(self, window):
-          window.blit(self.endingTopLine.image, self.endingTopLine.rect)
+          self.livesCounter = TextOnScreen(400, 10, 20, (0,0,0), 'Arial', "Lives", player.lives)          
 
      def runBasicEvents(self, events, keysPressed, window, width, height):
           window.blit(self.background, (0,0))

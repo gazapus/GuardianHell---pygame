@@ -4,10 +4,11 @@ from Guardian import Guardian
 from sources import guardianPaths
 from Level1 import Level1
 from Level2 import Level2
+from Level3 import Level3
 
 def main():     
      #Configuración del pantalla   
-     resolution = width, height = 800, 650
+     resolution = width, height = 800, 700
      window = pygame.display.set_mode(resolution)
      pygame.display.set_caption("No Escape From Hell")
      windowIconImage = pygame.image.load('./src/images/ico.png')
@@ -21,10 +22,12 @@ def main():
           guardianPaths['treasure-sound'], [400, 200], 3, 0)     
      level1 = Level1(width, height, player)
      level2 = Level2(width, height, player)
+     level3 = Level3(width, height, player)
      scenes = []
      scenes.append(scene0)
      scenes.append(level1)
      scenes.append(level2)
+     scenes.append(level3)
      i = -1
      initialize = True
      sceneData = {}

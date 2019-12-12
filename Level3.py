@@ -4,9 +4,9 @@ from Level import Level
 from TextOnScreen import TextOnScreen
 from threading import Timer
 
-class Level2(Level):
+class Level3(Level):
      def __init__(self, width, height, player):
-          super().__init__(width, height, player, "./src/images/background/h2.jpg")
+          super().__init__(width, height, player, "./src/images/background/h3.jpg")
           self.NEW_BASIC_SOUL = pygame.USEREVENT
           self.NEW_BOUNCER_SOUL = pygame.USEREVENT + 1
           self.NEW_BOOMERANG_SOUL = pygame.USEREVENT + 2
@@ -56,7 +56,7 @@ class Level2(Level):
                          self.livesFactory.addLive()
                     if event.type == self.END_LEVEL:
                          pygame.time.set_timer(self.END_LEVEL, 0)
-                         endLevelMessage = TextOnScreen(width/2, height/2, 50, (250, 0, 0), 'Arial', "Fin de nivel 2")
+                         endLevelMessage = TextOnScreen(width/2, height/2, 50, (250, 0, 0), 'Arial', "Fin de nivel 3")
                          window.blit(endLevelMessage.text, endLevelMessage.rect)
                          pygame.display.flip()
                          pygame.time.wait(1000)
