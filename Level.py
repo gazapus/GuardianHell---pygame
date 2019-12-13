@@ -23,6 +23,11 @@ class Level():
           self.pointsCounter = TextOnScreen(700, 10, 20, (0,0,0), 'Arial', "Points", player.points)
           self.livesCounter = TextOnScreen(400, 10, 20, (0,0,0), 'Arial', "Lives", player.lives)          
 
+     def killAll(self):
+          self.enemiesFactory.empty()
+          self.treasureFactory.empty()
+          self.livesFactory.empty()
+
      def runBasicEvents(self, events, keysPressed, window, width, height):
           window.blit(self.background, (0,0))
           window.blit(self.bridge, (0, self.bridgeYPosition))

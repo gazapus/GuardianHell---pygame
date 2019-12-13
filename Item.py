@@ -3,7 +3,7 @@ from threading import Timer
 from ClimbingObject import ClimbingObject
 
 class Item(ClimbingObject):
-     def __init__(self, ascendingimagesPath, speeds, startingPosition, _pxChange, _points ):
+     def __init__(self, ascendingimagesPath, speeds, startingPosition, _pxChange, _points, soundPath ):
           """
                Parameters
                ----------
@@ -23,16 +23,21 @@ class Item(ClimbingObject):
           self.points = _points
           #image that will be played when the treasure is taken
           self.takenImage = self.fill(ascendingimagesPath[0], 250, 250, 250)
+          self.isTaken = False
           #add sound
+          self.takeSound = pygame.mixer.Sound(soundPath)
 
      def beTaken(self):
           """ the object is taken: its points are returned """
-          self.image = self.takenImage
-          self.speed = [0,0]
-          Timer(0.1, self.dissapear).start()
-          #the points are moved to other temporal variable to prevent multiple assignments
-          pointsToReturn = self.points
-          self.points = 0
+          pointsToReturn = 0
+          if(not self.isTaken):
+               self.isTaken = True
+               self.takeSound.play()
+               self.image = self.takenImage
+               self.speed = [0,0]
+               Timer(0.1, self.dissapear).start()
+               #the points are moved to other temporal variable to prevent multiple assignments
+               pointsToReturn = self.points
           return pointsToReturn
 
      def dissapear(self):

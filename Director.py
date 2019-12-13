@@ -1,10 +1,11 @@
 import pygame, os, sys, time
 from Start import StartScreen
 from Guardian import Guardian
-from sources import guardianPaths
+from sources import guardianPaths, soundPaths
 from Level1 import Level1
 from Level2 import Level2
 from Level3 import Level3
+from GameOver import GameOver
 
 def main():     
      #Configuración del pantalla   
@@ -16,22 +17,25 @@ def main():
      pygame.init()
      clock = pygame.time.Clock()
      pygame.key.set_repeat(30)  
-     scene0 = StartScreen(width, height, "./src/images/background/h0.jpg", "Press any key to start")
+     scene0 = StartScreen(width, height, "./src/images/background/h0.jpg", "Press any key to start", soundPaths['start'])
      player = Guardian(guardianPaths['run-images'], guardianPaths['stop-image'], guardianPaths['jump-image'], 
-          guardianPaths['attack-image'], guardianPaths['attack-sound'], guardianPaths['die-images'], 
-          guardianPaths['treasure-sound'], [400, 200], 3, 0)     
+          guardianPaths['attack-image'], guardianPaths['die-images'], soundPaths, [400, 200], 3, 0)     
      level1 = Level1(width, height, player)
      level2 = Level2(width, height, player)
      level3 = Level3(width, height, player)
      scenes = []
+     ###
+     gameover = GameOver(str(player.points))
      scenes.append(scene0)
      scenes.append(level1)
-     scenes.append(level2)
-     scenes.append(level3)
+     scenes.append(gameover)
+     #scenes.append(level2)
+     #scenes.append(level3)
      i = -1
      initialize = True
-     sceneData = {}
      quit = False
+     pygame.mixer.Sound(soundPaths['music']).play(-1)
+
      while(not quit):
           clock.tick(60)  
           if(initialize):
@@ -40,9 +44,11 @@ def main():
                initialize = False  
           events = pygame.event.get()
           keysPressed = pygame.key.get_pressed()
-          sceneData = scenes[i].runEvents(events, keysPressed, window, width, height)   #ejecuta los eventos en la escena
-          if(sceneData.get("nextScene")):    #verifica si tiene que pasar a la siguiente escena
+          nextScene = scenes[i].runEvents(events, keysPressed, window, width, height)   #ejecuta los eventos en la escena
+          if(nextScene):    
                initialize = True
+          if(player.lives <= 0):
+               quit = True
           for event in events: 
                quit = event.type == pygame.QUIT
           pygame.display.flip() 

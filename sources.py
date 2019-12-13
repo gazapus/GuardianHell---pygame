@@ -22,20 +22,64 @@ guardianPaths = {
                './src/images/guardian/demondying004.png',
                './src/images/guardian/demondying005.png',
                './src/images/guardian/demondying006.png'
-               ],
-     'attack-sound': './src/sounds/guardian/attack.wav',
-     'treasure-sound': './src/sounds/guardian/treasure.wav'
+               ]
 }
 
 soulPaths = {
-     'up-images':  [  
-              './src/images/souls/soul-basic-up-a.png',
-              './src/images/souls/soul-basic-up-b.png'
+     'grey': {
+          'up-images':  [  
+              './src/images/souls/grey1.png',
+              './src/images/souls/grey2.png'
           ],
-     'down-images': [  
-              './src/images/souls/soul-basic-down-a.png',
-              './src/images/souls/soul-basic-down-b.png'
+          'down-images': [  
+               './src/images/souls/greyf.png'
           ]
+     },
+     'red': {
+          'up-images':  [  
+              './src/images/souls/red1.png',
+              './src/images/souls/red2.png'
+          ],
+          'down-images': [  
+               './src/images/souls/redf.png'
+          ]
+     },
+     'blue': {
+          'up-images':  [  
+              './src/images/souls/blue1.png',
+              './src/images/souls/blue2.png'
+          ],
+          'down-images': [  
+               './src/images/souls/bluef.png'
+          ]
+     },
+     'orange': {
+          'up-images':  [  
+              './src/images/souls/orange1.png',
+              './src/images/souls/orange2.png'
+          ],
+          'down-images': [  
+               './src/images/souls/orangef.png'
+          ]
+     },
+     'green': {
+          'up-images':  [  
+              './src/images/souls/green1.png',
+              './src/images/souls/green2.png'
+          ],
+          'down-images': [  
+               './src/images/souls/greenf.png'
+          ]
+     },
+     'new': {
+          'up-images':  [  
+              './src/images/souls/new1.png',
+              './src/images/souls/new2.png'
+          ],
+          'down-images': [  
+               './src/images/souls/newf.png'
+          ]
+     }
 }
 
 coinPaths = [
@@ -77,3 +121,14 @@ diamondPaths = [
 livePaths = [
      './src/images/items/live001.png'
 ]
+
+soundPaths = {
+     'attack': './src/sounds/attack.wav',
+     'treasure': './src/sounds/treasure.wav',
+     'soulPunch': './src/sounds/soulpunch.wav',
+     'live': './src/sounds/live.wav',
+     'explosion': './src/sounds/explosion.wav',
+     'music': './src/sounds/music.wav',
+     'demonScream': './src/sounds/demonScream.wav',
+     'start': './src/sounds/start.wav'
+}

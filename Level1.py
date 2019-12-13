@@ -16,17 +16,17 @@ class Level1(Level):
           self.NEW_LIVE = pygame.USEREVENT + 6
           self.END_LEVEL = pygame.USEREVENT + 7
 
-     def initialize(self, window):
+     def initialize(self, window, *others):
           window.blit(self.endingTopLine.image, self.endingTopLine.rect)
           pygame.time.set_timer(self.NEW_BASIC_SOUL, 3000)
           pygame.time.set_timer(self.NEW_BOUNCER_SOUL, 7000)
           pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 10000)
-          pygame.time.set_timer(self.NEW_FIREBALL, 17000)
+          pygame.time.set_timer(self.NEW_FIREBALL, 2000)
           pygame.time.set_timer(self.NEW_COIN, 16000)
           pygame.time.set_timer(self.NEW_DIAMOND, 27000)
           pygame.time.set_timer(self.NEW_LIVE, 31000)
-          pygame.time.set_timer(self.END_LEVEL, 60000)
-          Timer(52, self.stopAll).start()
+          pygame.time.set_timer(self.END_LEVEL, 20000)
+          Timer(10000, self.stopAll).start()
 
      def stopAll(self):
           pygame.time.set_timer(self.NEW_BASIC_SOUL, 0)
@@ -60,5 +60,5 @@ class Level1(Level):
                          window.blit(endLevelMessage.text, endLevelMessage.rect)
                          pygame.display.flip()
                          pygame.time.wait(1000)
-                         return {'nextScene': True}
-          return {}
+                         return True
+          return False

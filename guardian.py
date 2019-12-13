@@ -7,7 +7,7 @@ from itertools import cycle
 class Guardian(pygame.sprite.Sprite):
      def __init__(
                self, runLeftImagesPath, stoppedLeftImagePath, jumpLeftImagePath, attackImagePath, 
-               attackSoundPath, dieImagePaths, treasureSoundPath, startingPosition, _lives, _points
+               dieImagePaths, soundPaths, startingPosition, _lives, _points
                ):
           pygame.sprite.Sprite.__init__(self)
           pygame.mixer.init
@@ -19,10 +19,9 @@ class Guardian(pygame.sprite.Sprite):
           self.rightJumpImage = pygame.transform.flip(self.leftJumpImage, True, False)
           self.leftAttackImage = pygame.image.load(attackImagePath)
           self.rightAttackImage = pygame.transform.flip(self.leftAttackImage, True, False)
-          #self.rightAttackImage = pygame.image.load('./src/images/guardian/__demon_whack_attack_no_flames_right_006.png')
           self.image = self.stoppedLeftImage
-          self.attackSound = pygame.mixer.Sound(attackSoundPath)
-          self.treasureSound = pygame.mixer.Sound(treasureSoundPath)
+          self.attackSound = pygame.mixer.Sound(soundPaths['attack'])
+          self.scream = pygame.mixer.Sound(soundPaths['demonScream'])
           self.rect = self.image.get_rect()
           self.rect.center = startingPosition
           self.lives = _lives
@@ -142,12 +141,13 @@ class Guardian(pygame.sprite.Sprite):
         
      def getTreasure(self, treasuresTaken):
           if(treasuresTaken):
-               self.treasureSound.play()
                for treasure in treasuresTaken:
                     self.points += treasure.beTaken()
 
      def getAttack(self, attacksTaken):
           if(attacksTaken):
+               if(not self.isBeingAttacked):
+                    self.scream.play()
                for attack in attacksTaken:
                     self.lives -= attack.beTaken()
                self.isBeingAttacked = True

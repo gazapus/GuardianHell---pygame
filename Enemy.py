@@ -5,7 +5,7 @@ from ClimbingObject import ClimbingObject
 class Demon(ClimbingObject):
      def __init__(
                self, ascendingimagesPath, speeds, startingPosition, _pxChange,
-               descedingImagesPath, _hp, _points, _damageNecessaryToFall, _timeFalling 
+               descedingImagesPath, _hp, _points, _damageNecessaryToFall, _timeFalling, soundPaths, 
                ):
           """
                Parameters
@@ -40,6 +40,8 @@ class Demon(ClimbingObject):
           self.damageNecessaryToFall = _damageNecessaryToFall
           self.currentDamageReceived = 0
           self.isFalling = False
+          self.hitSound = pygame.mixer.Sound(soundPaths['soulPunch'])
+
 
      def updateImage(self):
           """@override: Update image object"""
@@ -62,6 +64,7 @@ class Demon(ClimbingObject):
           #amount of points that will be retuned if the object dies (hp = 0)
           pointsToReturn = 0
           if(not self.isFalling):
+               self.hitSound.play()
                self.hp -= hitDamage
                self.currentDamageReceived += hitDamage
                if(self.hp <= 0):
