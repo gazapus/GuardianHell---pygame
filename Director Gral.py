@@ -44,7 +44,7 @@ def main():
                if(levelNumber < len(scenes)): 
                     scenes[levelNumber].initialize(window, player.points) 
                     nextScene = False 
-                    player.lives = 3
+                    player.lives = 1    #cambiar luego
                     player.points = 0
                else:
                     levelNumber = 0

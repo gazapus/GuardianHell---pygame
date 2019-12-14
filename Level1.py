@@ -21,7 +21,7 @@ class Level1(Level):
           pygame.time.set_timer(self.NEW_BASIC_SOUL, 3000)
           pygame.time.set_timer(self.NEW_BOUNCER_SOUL, 7000)
           pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 10000)
-          pygame.time.set_timer(self.NEW_FIREBALL, 2000)
+          pygame.time.set_timer(self.NEW_FIREBALL, 1000)
           pygame.time.set_timer(self.NEW_COIN, 16000)
           pygame.time.set_timer(self.NEW_DIAMOND, 27000)
           pygame.time.set_timer(self.NEW_LIVE, 31000)
