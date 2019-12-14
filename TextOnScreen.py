@@ -16,6 +16,9 @@ class TextOnScreen(pygame.sprite.Sprite):
           fullText = text + valueText
           newFullText = self.font.render(fullText, True, self.color)
           return newFullText
+     
+     def setText(self, text):
+          self.text = self.font.render(text, True, self.color)
 
      def setValue(self, _value):
           self.value = _value

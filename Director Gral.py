@@ -57,6 +57,7 @@ def main():
           if(player.lives <= 0):
                nextScene = True
                levelNumber = len(scenes) - 2
+               player.runDie()
           for event in events: 
                quit = event.type == pygame.QUIT
           pygame.display.flip()
