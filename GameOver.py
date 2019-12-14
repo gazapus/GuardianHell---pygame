@@ -16,18 +16,18 @@ class GameOver():
         self.once = True
 
     def initialize(self, window, points):
+        self.textinput.clear_text()
         pygame.key.set_repeat(100)
         self.playerPoints = points
         self.pointsText.setValue(points)
         self.once = True
 
-    def killAll(self):
-        self.textinput.clear_text()
-
     def openFile(self):
         originalFile = open('score.txt', 'r+')
         lines = originalFile.readlines()
-        new = self.textinput.get_text() + "*" + str(self.playerPoints) + "\n"
+        new = self.textinput.get_text() + " *" + str(self.playerPoints) + "\n"
+        if(len(lines)>10):  #pequeño parche
+            lines.pop()
         lines.append(new)
         #preapra los scores para ordenarlos
         scores = []

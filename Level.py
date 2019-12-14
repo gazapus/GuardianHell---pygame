@@ -23,11 +23,12 @@ class Level():
           self.pointsCounter = TextOnScreen(700, 10, 20, (0,0,0), 'Arial', "Points", player.points)
           self.livesCounter = TextOnScreen(400, 10, 20, (0,0,0), 'Arial', "Lives", player.lives)          
 
-     def killAll(self):
+     def initialize(self, *others):
           self.enemiesFactory.empty()
           self.treasureFactory.empty()
+          self.attacksFactory.empty()
           self.livesFactory.empty()
-
+          
      def runBasicEvents(self, events, keysPressed, window, width, height):
           window.blit(self.background, (0,0))
           window.blit(self.bridge, (0, self.bridgeYPosition))
@@ -45,8 +46,6 @@ class Level():
 
           enemiesGoneList = pygame.sprite.spritecollide(self.endingTopLine, self.enemiesFactory, True)  
           enemiesGoneQuantify = len(enemiesGoneList)           
-          pygame.sprite.spritecollide(self.endingTopLine, self.treasureFactory, True)
-          pygame.sprite.spritecollide(self.endingBottomLine, self.enemiesFactory, True)
           treasureTaken = pygame.sprite.spritecollide(self.player, self.treasureFactory, False)
           if(treasureTaken):
                self.player.getTreasure(treasureTaken)

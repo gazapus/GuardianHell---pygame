@@ -7,7 +7,7 @@ from itertools import cycle
 class Guardian(pygame.sprite.Sprite):
      def __init__(
                self, runLeftImagesPath, stoppedLeftImagePath, jumpLeftImagePath, attackImagePath, 
-               dieImagePaths, soundPaths, startingPosition, _lives, _points
+               soundPaths, startingPosition, _lives, _points
                ):
           pygame.sprite.Sprite.__init__(self)
           pygame.mixer.init
@@ -38,7 +38,6 @@ class Guardian(pygame.sprite.Sprite):
           self.leftAttackedImage = pygame.image.load('./src/images/guardian/__demon_hurt_no_flames_000.png')
           self.rightAttackedImage = pygame.transform.flip(self.leftAttackedImage, True, False)
           self.isBeingAttacked = False
-          self.dieImages = self.setLinealImages(dieImagePaths)
                
      def setImages(self, imagesPath):
           """
@@ -50,16 +49,6 @@ class Guardian(pygame.sprite.Sprite):
                imagesList.append(pygame.image.load(imagePath).convert_alpha())
           return cycle(imagesList)
      
-     def setLinealImages(self, imagesPath):
-          """
-          Return a lineal images list
-          :param list images: list of paths of images
-          """
-          imagesList = []
-          for imagePath in imagesPath:
-               imagesList.append(pygame.image.load(imagePath).convert_alpha())
-          return imagesList
-
      def setInvertedImages(self, imagesPath):
           imagesList = []
           for imagePath in imagesPath:
@@ -171,16 +160,4 @@ class Guardian(pygame.sprite.Sprite):
      def getLives(self, livesTaken):
           if(livesTaken):
                for live in livesTaken:
-                    self.lives += live.beTaken()
-
-     def runDie(self):
-          while(True):
-               self.image = self.dieImages[0]
-               pygame.time.wait(300)
-               self.image = self.dieImages[1]
-               pygame.time.wait(300)
-               self.image = self.dieImages[2]
-               pygame.time.wait(300)
-               break
-               
-               
+                    self.lives += live.beTaken()              
