@@ -19,7 +19,7 @@ class TextInput:
     def __init__(self,
                  initial_string="",
                  font_family="",
-                 font_size=35,
+                 font_size=40,
                  antialias=True,
                  text_color=(0, 0, 0),
                  cursor_color=(0, 0, 1),

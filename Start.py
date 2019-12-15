@@ -5,7 +5,7 @@ class StartScreen(pygame.sprite.Sprite):
      def __init__(self, width, height, background, textStart, soundPath):
           pygame.sprite.Sprite.__init__(self)
           self.background = pygame.image.load(background)
-          self.startMessage = TextOnScreen(width/2, height/2, 45, (150,150,0), 'Arial', textStart)
+          self.startMessage = TextOnScreen(width/2, height/2 + 150, 45, (255,237,54), 'gothicum', textStart)
           self.startSound = pygame.mixer.Sound(soundPath)
 
      def initialize(self, window, *others):

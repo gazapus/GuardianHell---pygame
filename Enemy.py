@@ -41,6 +41,7 @@ class Demon(ClimbingObject):
           self.currentDamageReceived = 0
           self.isFalling = False
           self.hitSound = pygame.mixer.Sound(soundPaths['soulPunch'])
+          self.rect.inflate_ip(-10, -10)
 
 
      def updateImage(self):

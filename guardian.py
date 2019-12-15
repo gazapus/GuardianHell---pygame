@@ -7,7 +7,7 @@ from itertools import cycle
 class Guardian(pygame.sprite.Sprite):
      def __init__(
                self, runLeftImagesPath, stoppedLeftImagePath, jumpLeftImagePath, attackImagePath, 
-               soundPaths, startingPosition, _lives, _points
+               deadPath, victoryPath, soundPaths, startingPosition, _lives, _points
                ):
           pygame.sprite.Sprite.__init__(self)
           pygame.mixer.init
@@ -38,7 +38,9 @@ class Guardian(pygame.sprite.Sprite):
           self.leftAttackedImage = pygame.image.load('./src/images/guardian/__demon_hurt_no_flames_000.png')
           self.rightAttackedImage = pygame.transform.flip(self.leftAttackedImage, True, False)
           self.isBeingAttacked = False
-               
+          self.deadImage = pygame.image.load(deadPath)
+          self.victoryImage = pygame.image.load(victoryPath)
+          
      def setImages(self, imagesPath):
           """
           Return a cyclic images list
@@ -161,3 +163,6 @@ class Guardian(pygame.sprite.Sprite):
           if(livesTaken):
                for live in livesTaken:
                     self.lives += live.beTaken()              
+
+     def setGameOverImage(self):
+          self.image = self.victoryImage if (self.lives > 0) else self.deadImage

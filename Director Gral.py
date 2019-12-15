@@ -17,15 +17,15 @@ def main():
      pygame.init()
      clock = pygame.time.Clock()
      pygame.key.set_repeat(30)  
-     scene0 = StartScreen(width, height, "./src/images/background/h0.jpg", "Press any key to start", soundPaths['start'])
+     scene0 = StartScreen(width, height, "./src/images/background/h0.png", "Press any key to start", soundPaths['start'])
      player = Guardian(guardianPaths['run-images'], guardianPaths['stop-image'], guardianPaths['jump-image'], 
-          guardianPaths['attack-image'], soundPaths, [400, 200], 3, 0)     
+          guardianPaths['attack-image'], guardianPaths["dead"], guardianPaths["victory"], soundPaths, [400, 200], 3, 0)     
      level1 = Level1(width, height, player)
      level2 = Level2(width, height, player)
      level3 = Level3(width, height, player)
      scenes = []
      ###
-     gameover = GameOver()
+     gameover = GameOver(player)
      scenes.append(scene0)
      scenes.append(level1)
      scenes.append(gameover)

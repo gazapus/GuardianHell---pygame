@@ -16,13 +16,8 @@ guardianPaths = {
      'stop-image': './src/images/guardian/__demon_defend_no_flames_000.png',
      'jump-image': './src/images/guardian/__demon_jump_no_flames_008.png',
      'attack-image': './src/images/guardian/__demon_whack_attack_no_flames_006.png',
-     'die-images': [
-               './src/images/guardian/demondying002.png',
-               './src/images/guardian/demondying003.png',
-               './src/images/guardian/demondying004.png',
-               './src/images/guardian/demondying005.png',
-               './src/images/guardian/demondying006.png'
-               ]
+     "dead": './src/images/guardian/dead.png',
+     "victory": './src/images/guardian/victory.png'
 }
 
 soulPaths = {

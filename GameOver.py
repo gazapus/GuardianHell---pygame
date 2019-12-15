@@ -2,32 +2,64 @@ from Text_input import TextInput
 import pygame, time
 from TextOnScreen import TextOnScreen
 
-
 class GameOver():
-    def __init__(self):
-        self.textinput = TextInput(max_string_length=10)
-        self.yourName = TextOnScreen(20, 20, 45, (150, 150, 0), 'Arial',
-                                     "Your Name:")
-        self.pointsText = TextOnScreen(200, 40, 30, (150, 150, 0), 'Arial',
-                                       "Points")
-        self.scores = []
-        self.playerPoints = 0
+    def __init__(self, player):
+        self.textinput = TextInput(text_color=(225, 14, 0), max_string_length=10, font_family='gothicum')
+        self.playerPointsOnScreen = TextOnScreen(320, 100, 50, (225, 14, 0), 'gothicum', "POINTS ")
+        self.scores = [] 
+        self.playerPoints = 0 
         self.inputName = True
-        self.once = True
+        self.showOwnScore = False
+        self.player = player
 
     def initialize(self, window, points):
+        self.playerPoints = points
+        self.player.setGameOverImage()
+        self.loadScoresFromFile()
+        self.showOwnScore = True
+        self.inputName = self.isNewRecord()
+        self.playerPointsOnScreen.setValue(points) 
         self.textinput.clear_text()
         pygame.key.set_repeat(100)
-        self.playerPoints = points
-        self.pointsText.setValue(points)
-        self.once = True
-
-    def openFile(self):
-        originalFile = open('score.txt', 'r+')
-        lines = originalFile.readlines()
+        
+    def isNewRecord(self):
+        leastScore = self.scores[-1]['points']
+        return self.playerPoints > leastScore
+        
+    def loadScoresFromFile(self):
+        originalFile = open('score.txt', 'r')
+        lines = originalFile.readlines()[:10]
+        scores = []
+        for line in lines:
+            dataStrings = line.split("*")
+            dataObject = {
+                'name': dataStrings[0],
+                'points': int(dataStrings[1].rstrip("\n"))
+            }
+            scores.append(dataObject)
+        self.scores = scores
+        
+    def updateScores(self):
+        newScore = {
+            "name": self.textinput.get_text(),
+            "points": self.playerPoints
+        }
+        self.scores.append(newScore)
+        self.scores.sort(key=lambda x: x['points'], reverse=True)
+        self.scores.pop()
+        
+    def saveScoresToFile(self):
+        newLines = []
+        for score in self.scores:
+            newLines.append(score["name"] + "*" + str(score["points"]) + "\n")
+        originalFile = open('score.txt', 'w')
+        originalFile.writelines(newLines)
+        originalFile.close()
+        
+    """def saveFile(self):
+        originalFile = open('score.txt', 'r')
+        lines = originalFile.readlines()[:10]
         new = self.textinput.get_text() + " *" + str(self.playerPoints) + "\n"
-        if(len(lines)>10):  #pequeño parche
-            lines.pop()
         lines.append(new)
         #preapra los scores para ordenarlos
         scores = []
@@ -45,42 +77,43 @@ class GameOver():
         newLines = []
         for score in scores:
             newLines.append(score["name"] + "*" + str(score["points"]) + "\n")
-        originalFile.seek(0)
-        originalFile.writelines(newLines)
         originalFile.close()
+        originalFile = open('score.txt', 'w')
+        originalFile.writelines(newLines)
+        originalFile.close()"""
 
     def runEvents(self, events, keys, window, *others):
-        if (self.inputName):
-            window.fill((225, 225, 225))
-            window.blit(self.yourName.text, self.yourName.rect)
-            window.blit(self.pointsText.text, self.pointsText.rect)
-            self.textinput.update(events)
-            window.blit(self.textinput.get_surface(), (50, 100))
+        if(self.showOwnScore):
+            window.fill((0, 0, 0))
+            window.blit(self.playerPointsOnScreen.text, self.playerPointsOnScreen.rect)
+            if (self.inputName):
+                youtNameText = TextOnScreen(100, 200, 40, (225, 14, 0), 'gothicum', "NAME:")
+                window.blit(youtNameText.text, youtNameText.rect)
+                self.textinput.update(events)
+                window.blit(self.textinput.get_surface(), (172, 175))
         else:
-            if(self.once):
-                window.fill((225, 225, 225))
-                pos = 50
-                counter = 1
-                ranking = TextOnScreen(150, 10, 35, (100, 200, 100), 'Arial', "RANKING")
-                window.blit(ranking.text, ranking.rect)
-                for score in self.scores:
-                    positionOnScreen = TextOnScreen(50, pos, 30, (100, 200, 100), 'Arial', str(counter))
-                    pointsOnScreen = TextOnScreen(100, pos, 30, (100, 200, 100), 'Arial', str(score["points"]))
-                    nameOnScreen = TextOnScreen(200, pos, 30, (100, 200, 100), 'Arial', score["name"])
-                    window.blit(positionOnScreen.text, positionOnScreen.rect)
-                    window.blit(pointsOnScreen.text, pointsOnScreen.rect)
-                    window.blit(nameOnScreen.text, nameOnScreen.rect)
-                    pos += 30
-                    counter += 1
-                self.once = False
+            window.fill((0, 0, 0))
+            yLinePosition = 100
+            counter = 1
+            ranking = TextOnScreen(350, 50, 40, (225, 15, 0), 'gothicum', "RANKING")
+            window.blit(ranking.text, ranking.rect)
+            for score in self.scores:
+                positionOnScreen = TextOnScreen(240, yLinePosition, 30, (225, 15, 0), 'gothicum', str(counter))
+                pointsOnScreen = TextOnScreen(300, yLinePosition, 30, (225, 15, 0), 'gothicum', str(score["points"]))
+                nameOnScreen = TextOnScreen(420, yLinePosition, 30, (225, 15, 0), 'gothicum', score["name"])
+                window.blit(positionOnScreen.text, positionOnScreen.rect)
+                window.blit(pointsOnScreen.text, pointsOnScreen.rect)
+                window.blit(nameOnScreen.text, nameOnScreen.rect)
+                yLinePosition += 30
+                counter += 1
+        window.blit(self.player.image, (300, 450))
         for event in events:
             if (event.type == pygame.KEYUP):
                 if (event.key == pygame.K_RETURN):
-                    if (self.inputName):
-                        self.inputName = False
-                        self.openFile()
+                    if (self.showOwnScore):
+                        self.showOwnScore = False
+                        self.updateScores()
+                        self.saveScoresToFile()
                     else:
-                        self.inputName = True #necesario ?
-                        self.once = True # ?
                         return True
-        False
+        return False

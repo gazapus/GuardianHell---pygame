@@ -26,6 +26,7 @@ class Item(ClimbingObject):
           self.isTaken = False
           #add sound
           self.takeSound = pygame.mixer.Sound(soundPath)
+          self.rect.inflate_ip(-10, -10)
 
      def beTaken(self):
           """ the object is taken: its points are returned """
