@@ -1,10 +1,8 @@
 import pygame
 from Enemy import Demon
-from sources import guardianPaths
 from Factory import Factory
 from Line import Line
 from Guardian import Guardian
-from sources import guardianPaths
 from TextOnScreen import TextOnScreen
 from threading import Timer
 class Level():
@@ -19,9 +17,9 @@ class Level():
           self.treasureFactory = Factory(width, height)
           self.attacksFactory = Factory(width, height)
           self.livesFactory = Factory(width, height)
-          self.enemiesGoneCounter = TextOnScreen(40, 10, 20, (0,0,0), 'Arial', "Souls Gone", enemiesGoneQuantity)
-          self.pointsCounter = TextOnScreen(700, 10, 20, (0,0,0), 'Arial', "Points", player.points)
-          self.livesCounter = TextOnScreen(400, 10, 20, (0,0,0), 'Arial', "Lives", player.lives)          
+          self.enemiesGoneCounter = TextOnScreen(50, 10, 18, (250, 250, 250), 'rockwell', "Escaped", enemiesGoneQuantity)
+          self.pointsCounter = TextOnScreen(700, 10, 18, (250, 250, 250), 'rockwell', "Points", player.points)
+          self.livesCounter = TextOnScreen(400, 10, 18, (250, 250, 250), 'rockwell', "Lives", player.lives)          
 
      def initialize(self, *others):
           self.enemiesFactory.empty()

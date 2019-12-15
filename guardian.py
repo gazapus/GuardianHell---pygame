@@ -5,20 +5,20 @@ from Item import Item
 from itertools import cycle
 
 class Guardian(pygame.sprite.Sprite):
-     def __init__(
-               self, runLeftImagesPath, stoppedLeftImagePath, jumpLeftImagePath, attackImagePath, 
-               deadPath, victoryPath, soundPaths, startingPosition, _lives, _points
-               ):
+     def __init__( self, guardianImagePaths, soundPaths, startingPosition, _lives=3, _points=0):
           pygame.sprite.Sprite.__init__(self)
-          pygame.mixer.init
-          self.runLeftImages =  self.setImages(runLeftImagesPath)
-          self.runRightImages = self.setInvertedImages(runLeftImagesPath)
-          self.stoppedLeftImage = pygame.image.load(stoppedLeftImagePath)
+          self.runLeftImages =  self.setImages(guardianImagePaths['run-images'])
+          self.runRightImages = self.setInvertedImages(guardianImagePaths['run-images'])
+          self.stoppedLeftImage = pygame.image.load(guardianImagePaths['stop-image'])
           self.stoppedRightImage = pygame.transform.flip(self.stoppedLeftImage, True, False)
-          self.leftJumpImage = pygame.image.load(jumpLeftImagePath)
+          self.leftJumpImage = pygame.image.load(guardianImagePaths['jump-image'])
           self.rightJumpImage = pygame.transform.flip(self.leftJumpImage, True, False)
-          self.leftAttackImage = pygame.image.load(attackImagePath)
+          self.leftAttackImage = pygame.image.load(guardianImagePaths['attack-image'])
           self.rightAttackImage = pygame.transform.flip(self.leftAttackImage, True, False)
+          self.leftAttackedImage = pygame.image.load(guardianImagePaths["hurt"])
+          self.rightAttackedImage = pygame.transform.flip(self.leftAttackedImage, True, False)
+          self.deadImage = pygame.image.load(guardianImagePaths["dead"])
+          self.victoryImage = pygame.image.load(guardianImagePaths["victory"])
           self.image = self.stoppedLeftImage
           self.attackSound = pygame.mixer.Sound(soundPaths['attack'])
           self.scream = pygame.mixer.Sound(soundPaths['demonScream'])
@@ -35,11 +35,7 @@ class Guardian(pygame.sprite.Sprite):
           self.isAttacking = False
           self.canAttack = True
           self.attackStarted = False
-          self.leftAttackedImage = pygame.image.load('./src/images/guardian/__demon_hurt_no_flames_000.png')
-          self.rightAttackedImage = pygame.transform.flip(self.leftAttackedImage, True, False)
           self.isBeingAttacked = False
-          self.deadImage = pygame.image.load(deadPath)
-          self.victoryImage = pygame.image.load(victoryPath)
           
      def setImages(self, imagesPath):
           """
@@ -166,3 +162,7 @@ class Guardian(pygame.sprite.Sprite):
 
      def setGameOverImage(self):
           self.image = self.victoryImage if (self.lives > 0) else self.deadImage
+          
+     def restart(self, _lives=3):
+          self.lives = _lives
+          self.points = 0

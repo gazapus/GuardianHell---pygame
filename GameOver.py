@@ -90,7 +90,7 @@ class GameOver():
                 youtNameText = TextOnScreen(100, 200, 40, (225, 14, 0), 'gothicum', "NAME:")
                 window.blit(youtNameText.text, youtNameText.rect)
                 self.textinput.update(events)
-                window.blit(self.textinput.get_surface(), (172, 175))
+                window.blit(self.textinput.get_surface(), (170, 173))
         else:
             window.fill((0, 0, 0))
             yLinePosition = 100
@@ -100,11 +100,11 @@ class GameOver():
             for score in self.scores:
                 positionOnScreen = TextOnScreen(240, yLinePosition, 30, (225, 15, 0), 'gothicum', str(counter))
                 pointsOnScreen = TextOnScreen(300, yLinePosition, 30, (225, 15, 0), 'gothicum', str(score["points"]))
-                nameOnScreen = TextOnScreen(420, yLinePosition, 30, (225, 15, 0), 'gothicum', score["name"])
+                nameOnScreen = TextOnScreen(425, yLinePosition, 30, (225, 15, 0), 'gothicum', score["name"])
                 window.blit(positionOnScreen.text, positionOnScreen.rect)
                 window.blit(pointsOnScreen.text, pointsOnScreen.rect)
                 window.blit(nameOnScreen.text, nameOnScreen.rect)
-                yLinePosition += 30
+                yLinePosition += 32
                 counter += 1
         window.blit(self.player.image, (300, 450))
         for event in events:

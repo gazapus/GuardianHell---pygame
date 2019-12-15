@@ -42,7 +42,7 @@ class Demon(ClimbingObject):
           self.isFalling = False
           self.hitSound = pygame.mixer.Sound(soundPaths['soulPunch'])
           self.rect.inflate_ip(-10, -10)
-
+          self.justBeaten = False
 
      def updateImage(self):
           """@override: Update image object"""
@@ -64,7 +64,7 @@ class Demon(ClimbingObject):
           """
           #amount of points that will be retuned if the object dies (hp = 0)
           pointsToReturn = 0
-          if(not self.isFalling):
+          if(not self.isFalling and not self.justBeaten):
                self.hitSound.play()
                self.hp -= hitDamage
                self.currentDamageReceived += hitDamage
@@ -80,12 +80,14 @@ class Demon(ClimbingObject):
                else:
                     self.speed[1] = self.originalSpeeds[1] - round(self.originalSpeeds[1]/2)
                     self.image = self.hitImage
-                    Timer(0.1, self.resumeNormalSpeed).start()
+                    self.justBeaten = True
+                    Timer(0.4, self.resumeNormal).start()
           return pointsToReturn
 
-     def resumeNormalSpeed(self):
-          """The object back to normal fly"""
+     def resumeNormal(self):
+          """The object back to normal fly and can be beated"""
           if(not self.isFalling):
+               self.justBeaten = False
                self.speed = self.originalSpeeds
                self.image = next(self.ascendingimages)
 
