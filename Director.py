@@ -1,14 +1,14 @@
 import pygame, os, sys, time
-from Start import StartScreen
+
 from Guardian import Guardian
 from sources import guardianImagesPaths, soundPaths, scenesPaths
+from Start import StartScreen
 from Level1 import Level1
 from Level2 import Level2
 from Level3 import Level3
 from Level4 import Level4
 from Level5 import Level5
 from Level6 import Level6
-
 from GameOver import GameOver
 
 def main():     
@@ -26,7 +26,6 @@ def main():
      #Instantiation of player
      player = Guardian(guardianImagesPaths, soundPaths, [400, 200], 3, 0)     
      ### Scenes statement
-     scenes = []
      scene0 = StartScreen(width, height, scenesPaths["startScreen"], "Press any key to start", soundPaths['start'])
      level1 = Level1(width, height, player, scenesPaths["level1"])
      level2 = Level2(width, height, player, scenesPaths["level2"])
@@ -35,6 +34,8 @@ def main():
      level5 = Level5(width, height, player, scenesPaths["level5"])
      level6 = Level6(width, height, player, scenesPaths["level6"])
      gameover = GameOver(player)
+     #The scenes are added to an array that will be traversed as the level progresses 
+     scenes = []
      scenes.append(scene0)
      scenes.append(level1)
      scenes.append(level2)
@@ -43,17 +44,19 @@ def main():
      scenes.append(level5)
      scenes.append(level6)
      scenes.append(gameover)
+     #sceneNumber will be the index of the scene array
      sceneNumber = -1
      runNextScene = True
      quit = False
-     #play music
      pygame.mixer.Sound(soundPaths['music']).play(-1)
-     #loop of the game
      while(not quit):
           clock.tick(60)  
           if(runNextScene):
                sceneNumber += 1  
                runNextScene = False
+               #check if the player has lost all their lives and go to the "game over" scene
+               if(player.lives <= 0):
+                    sceneNumber = len(scenes) - 1
                #check if there are still scenes to go
                if(sceneNumber < len(scenes)): 
                     scenes[sceneNumber].initialize(window, player.points) 
@@ -65,11 +68,7 @@ def main():
                     sceneNumber = 0
                     scenes[sceneNumber].initialize(window)
           events = pygame.event.get()
-          keysPressed = pygame.key.get_pressed()
-          #check if the player has lost all their lives and go to the "game over" scene
-          if(player.lives <= 0):
-               runNextScene = True
-               sceneNumber = len(scenes) - 2
+          keysPressed = pygame.key.get_pressed()     
           #run the scene behavior according to the events and return true if it must go to the next scene
           runNextScene = scenes[sceneNumber].runEvents(events, keysPressed, window, width, height) 
           for event in events: 

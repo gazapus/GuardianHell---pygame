@@ -33,7 +33,7 @@ class Demon(ClimbingObject):
           super().__init__(ascendingimagesPath, speeds, startingPosition, _pxChange)
           self.descedingImages = self.setImages(descedingImagesPath)
           self.hitImage = self.fill(ascendingimagesPath[0], 250, 250, 250)  
-          self.originalSpeeds = [speeds[0], speeds[1]] #PARCHE ?
+          self.originalSpeeds = [speeds[0], speeds[1]] 
           self.points = _points
           self.hp = _hp
           self.timeFalling = _timeFalling
@@ -45,8 +45,8 @@ class Demon(ClimbingObject):
           self.justBeaten = False
 
      def updateImage(self):
-          """@override: Update image object"""
-          # if the object isn't falling
+          """@override: Update image enemy"""
+          # if the enemy isn't falling
           # the position is compared with the last position where there has been an ascending image change
           # if it has moved far enough, it changes its image
           if(not self.isFalling and self.rect.y < self.lastYPosition - self.pxChange):
@@ -59,10 +59,10 @@ class Demon(ClimbingObject):
 
      def getAttack(self, hitDamage):
           """
-          the object is attacked: the hp is reduced and maybe falls
+          the enemy is attacked: the hp is reduced and maybe falls
           :params int hitDamage: quantity of hp to be reduced
           """
-          #amount of points that will be retuned if the object dies (hp = 0)
+          #amount of points that will be retuned if the enemy dies (hp = 0)
           pointsToReturn = 0
           if(not self.isFalling and not self.justBeaten):
                self.hitSound.play()
@@ -71,12 +71,12 @@ class Demon(ClimbingObject):
                if(self.hp <= 0):
                     pointsToReturn = self.points
                     self.fall()
-               #if the object is falls but still lives, its return flight is scheduled
+               #if the enemy is falls but still lives, its return flight is scheduled
                elif(self.currentDamageReceived >= self.damageNecessaryToFall):
                     self.fall()
                     self.currentDamageReceived = 0
                     Timer(self.timeFalling, self.turnBackFly).start()
-               #if the object not falls, this one continues its way
+               #if the enemy not falls, this one continues its way
                else:
                     self.speed[1] = self.originalSpeeds[1] - round(self.originalSpeeds[1]/2)
                     self.image = self.hitImage
@@ -85,20 +85,20 @@ class Demon(ClimbingObject):
           return pointsToReturn
 
      def resumeNormal(self):
-          """The object back to normal fly and can be beated"""
+          """The enemy back to normal fly and can be beated"""
           if(not self.isFalling):
                self.justBeaten = False
                self.speed = self.originalSpeeds
                self.image = next(self.ascendingimages)
 
      def turnBackFly(self):
-          """The object back to normal fly"""
+          """The enemy back to normal fly"""
           self.isFalling = False
           self.speed = self.originalSpeeds
           self.image = next(self.ascendingimages)
                
      def fall(self):
-          """The object falls"""
+          """The enemy falls"""
           self.isFalling = True
           self.speed = [0, 3]
           self.image = next(self.descedingImages)

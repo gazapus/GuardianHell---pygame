@@ -1,3 +1,6 @@
+"""
+This file contains the routes grouped in objects and / or lists of the images and sounds used in the game
+"""
 guardianImagesPaths = {
      'run-images': [  
                './src/images/guardian/__demon_run_no_flames_000.png',

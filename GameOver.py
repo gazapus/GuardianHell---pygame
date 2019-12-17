@@ -3,6 +3,10 @@ import pygame, time
 from TextOnScreen import TextOnScreen
 
 class GameOver():
+    """
+    This class allows you to visualize the ranking of scores and save the player's score in case 
+    of breaking one of the best ten
+    """
     def __init__(self, player):
         self.textinput = TextInput(text_color=(225, 14, 0), max_string_length=10, font_family='gothicum')
         self.playerPointsOnScreen = TextOnScreen(320, 100, 50, (225, 14, 0), 'gothicum', "POINTS ")
@@ -55,32 +59,6 @@ class GameOver():
         originalFile = open('score.txt', 'w')
         originalFile.writelines(newLines)
         originalFile.close()
-        
-    """def saveFile(self):
-        originalFile = open('score.txt', 'r')
-        lines = originalFile.readlines()[:10]
-        new = self.textinput.get_text() + " *" + str(self.playerPoints) + "\n"
-        lines.append(new)
-        #preapra los scores para ordenarlos
-        scores = []
-        for line in lines:
-            dataStrings = line.split("*")
-            dataObject = {
-                'name': dataStrings[0],
-                'points': int(dataStrings[1].rstrip("\n"))
-            }
-            scores.append(dataObject)
-        scores.sort(key=lambda x: x['points'], reverse=True)
-        scores.pop()
-        self.scores = scores
-        #prepara el archivo para guardarlo
-        newLines = []
-        for score in scores:
-            newLines.append(score["name"] + "*" + str(score["points"]) + "\n")
-        originalFile.close()
-        originalFile = open('score.txt', 'w')
-        originalFile.writelines(newLines)
-        originalFile.close()"""
 
     def runEvents(self, events, keys, window, *others):
         if(self.showOwnScore):

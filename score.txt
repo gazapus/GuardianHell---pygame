@@ -1,10 +1,10 @@
-cristian3*2345
- cristian7*2260
-cristian5*1370
- cristian6*1060
-perdi*1000
-darr*945
-wiwok*670
- KIKO*670
-lop*590
-Dios*573
+cristian1*220
+cristian2*105
+cristian3*40
+--*0
+--*0
+--*0
+--*0
+--*0
+--*0
+--*0

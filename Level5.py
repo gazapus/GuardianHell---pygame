@@ -25,7 +25,7 @@ class Level5(Level):
           pygame.time.set_timer(self.NEW_SUPER_FIREBALL, 6100)
           pygame.time.set_timer(self.NEW_DIAMOND, 5500)
           pygame.time.set_timer(self.NEW_COIN, 3100)
-          pygame.time.set_timer(self.NEW_LIVES, 20000)
+          pygame.time.set_timer(self.NEW_LIVES, 23000)
           pygame.time.set_timer(self.END_LEVEL, 60000)
           stopTimer = Timer(55, self.stopAll)
           self.timerStopAll = stopTimer
