@@ -9,7 +9,7 @@ class Level():
      def __init__(self, width, height, player, backgroundPath, enemiesGoneQuantity=0):
           self.player = player
           self.bridge = pygame.image.load('./src/images/background/bridge.png')
-          self.bridgeYPosition = player.rect.y + player.rect.height - 10
+          self.bridgeYPosition = 190
           self.background = pygame.image.load(backgroundPath)
           self.endingTopLine = Line(width, -400)
           self.endingBottomLine = Line(width, height + 400)

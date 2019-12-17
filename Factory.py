@@ -17,7 +17,7 @@ class Factory(pygame.sprite.Group):
           self.add(newSoul)
 
      def addSoulBounce(self):
-          newSoul = Demon(soulPaths['green']['up-images'], [4, -4], [0,0] , 25, soulPaths['green']['down-images'], 1, 15, 1, 0 , soundPaths)
+          newSoul = Demon(soulPaths['green']['up-images'], [4, -3], [0,0] , 25, soulPaths['green']['down-images'], 1, 15, 1, 0 , soundPaths)
           newSoul.rect.x = random.randint(round(newSoul.rect.width/2), self.widthScreen - newSoul.rect.width)
           newSoul.rect.y = self.heightScreen + newSoul.rect.height
           self.add(newSoul)
@@ -29,25 +29,25 @@ class Factory(pygame.sprite.Group):
           self.add(newSoul)
      
      def addSoulStrong(self):
-          newSoul = Demon(soulPaths['orange']['up-images'], [0, -4], [0,0] , 25, soulPaths['orange']['down-images'], 2, 25, 2, 1, soundPaths)
+          newSoul = Demon(soulPaths['orange']['up-images'], [0, -3], [0,0] , 25, soulPaths['orange']['down-images'], 2, 25, 2, 1, soundPaths)
           newSoul.rect.x = random.randint(round(newSoul.rect.width/2), self.widthScreen - newSoul.rect.width)
           newSoul.rect.y = self.heightScreen + newSoul.rect.height
           self.add(newSoul)
      
      def addSoulBoomerangStrong(self):
-          newSoul = Demon(soulPaths['yellow']['up-images'], [0, -4], [0,0] , 25, soulPaths['yellow']['down-images'], 3, 40, 2, 2, soundPaths)
+          newSoul = Demon(soulPaths['yellow']['up-images'], [0, -3], [0,0] , 25, soulPaths['yellow']['down-images'], 3, 40, 2, 2, soundPaths)
           newSoul.rect.x = random.randint(round(newSoul.rect.width/2), self.widthScreen - newSoul.rect.width)
           newSoul.rect.y = self.heightScreen + newSoul.rect.height
           self.add(newSoul)
      
      def addSoulBonceBoomerang(self):
-          newSoul = Demon(soulPaths['white']['up-images'], [random.randint(-4, 4), -3], [0,0] , 25, soulPaths['white']['down-images'], 3, 60, 1, 3, soundPaths)
+          newSoul = Demon(soulPaths['white']['up-images'], [random.randint(-3, 4), -3], [0,0] , 25, soulPaths['white']['down-images'], 3, 60, 1, 3, soundPaths)
           newSoul.rect.x = random.randint(round(newSoul.rect.width/2), self.widthScreen - newSoul.rect.width)
           newSoul.rect.y = self.heightScreen + newSoul.rect.height
           self.add(newSoul)
 
      def addFireball(self):
-          xSpeed = random.randint(-3,3)
+          xSpeed = random.randint(-2,2)
           ySpeed = random.randint(-4,-2)
           xPosition = random.randint(50, self.widthScreen - 50)
           yPosition = self.heightScreen +  50
@@ -57,7 +57,7 @@ class Factory(pygame.sprite.Group):
      def addSuperFireball(self):
           xPosition = random.randint(50, self.widthScreen - 50)
           yPosition = self.heightScreen +  50
-          newFireball = Item(fireballPaths["superfireball"], [0, -7], [xPosition, yPosition], 25, 1, soundPaths['explosion2'])
+          newFireball = Item(fireballPaths["superfireball"], [0, -8], [xPosition, yPosition], 25, 1, soundPaths['explosion2'])
           self.add(newFireball)
 
      def addCoin(self):
@@ -79,5 +79,5 @@ class Factory(pygame.sprite.Group):
           xSpeed = random.randint(-5, 5)
           xPosition = random.randint(50, self.widthScreen - 50)
           yPosition = self.heightScreen +  50
-          newLive = Item(livePaths, [xSpeed, -5], [xPosition, yPosition], 25, 1, soundPaths['live'])
+          newLive = Item(livePaths, [xSpeed, -4], [xPosition, yPosition], 25, 1, soundPaths['live'])
           self.add(newLive)

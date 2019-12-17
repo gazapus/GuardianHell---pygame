@@ -19,15 +19,15 @@ class Level3(Level):
      def initialize(self, window, *others):
           super().initialize()
           window.blit(self.endingTopLine.image, self.endingTopLine.rect)
-          pygame.time.set_timer(self.NEW_BOUNCE_SOUL, 3000)
-          pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 5500)
-          pygame.time.set_timer(self.NEW_BOOMERANG_STRONG, 7000)
-          pygame.time.set_timer(self.NEW_FIREBALL, 5500)
-          pygame.time.set_timer(self.NEW_COIN, 4500)
-          pygame.time.set_timer(self.NEW_DIAMOND, 8000)
+          pygame.time.set_timer(self.NEW_BOUNCE_SOUL, 4500)
+          pygame.time.set_timer(self.NEW_BOOMERANG_SOUL, 7300)
+          pygame.time.set_timer(self.NEW_BOOMERANG_STRONG, 9200)
+          pygame.time.set_timer(self.NEW_FIREBALL, 7700)
+          pygame.time.set_timer(self.NEW_COIN, 6500)
+          pygame.time.set_timer(self.NEW_DIAMOND, 11000)
           pygame.time.set_timer(self.NEW_LIVE, 18000)
           pygame.time.set_timer(self.END_LEVEL, 60000)
-          stopTimer = Timer(55, self.stopAll)
+          stopTimer = Timer(54, self.stopAll)
           self.timerStopAll = stopTimer
           stopTimer.start()
      def stopAll(self):
@@ -74,6 +74,8 @@ class Level3(Level):
           else:
                gameOverText = TextOnScreen(width/2, height/2, 75,(255, 233, 200), 'impact', "GAME OVER")
                window.blit(gameOverText.text, gameOverText.rect)
+               self.timerStopAll.cancel()
+               pygame.time.set_timer(self.END_LEVEL, 0)
                pygame.display.flip()
                pygame.time.wait(2000)
                return True
